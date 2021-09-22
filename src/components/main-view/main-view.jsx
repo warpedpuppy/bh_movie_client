@@ -49,9 +49,10 @@ export class MainView extends React.Component {
 
     getMovies(token) {
         axios.get('https://stormy-taiga-55813.herokuapp.com/movies', {
-            headers: { Authorization: 'Bearer ${token}'}
+            headers: { Authorization: `Bearer ${token}`}
         })
         .then(response => {
+            console.log("get movies response", response)
             //assign the result to the state
             this.setState({
                 movies: response.data
@@ -65,9 +66,9 @@ export class MainView extends React.Component {
     
     render() {
         
-            const { movies, selectedMovie } = this.state;
+            const { movies, selectedMovie, user } = this.state;
 
-            if (selectedMovie) return <MovieView movie={selectedMovie} />;
+            // if (selectedMovie) return <MovieView movie={selectedMovie} />;
 
             if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />;
 
@@ -79,7 +80,9 @@ export class MainView extends React.Component {
                   ? (
                     <Row className="justify-content-md-center">
                         <Col md={8}>
-                        <MovieView movie={selectedMovie} onBackClick= {newSelectedMovie => { this.setSelectedMovie(newSelectedMovie); }}/>
+                        <MovieView 
+                            movie={selectedMovie} onBackClick={ () => this.setSelectedMovie(null) }
+                        />
                         </Col>
                     </Row>
                   )
